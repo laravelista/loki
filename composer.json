@@ -1,0 +1,36 @@
+{
+    "name": "laravelista/loki",
+    "description": "Laravel localization done right.",
+    "keywords": [
+        "laravel",
+        "localization"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mario Bašić",
+            "email": "mario@laravelista.hr",
+            "homepage": "https://laravelista.com"
+        }
+    ],
+    "require": {
+        "php": "7.2.*",
+        "illuminate/support": "5.*",
+        "illuminate/http": "5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laravelista\\Loki\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Laravelista\\Loki\\ServiceProvider"
+            ]
+        }
+    }
+}
