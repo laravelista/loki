@@ -22,6 +22,11 @@ class Loki extends UrlGenerator
     {
         $locale = app()->getLocale();
 
+        // important because of redirect()->route()
+        if ($this->isValidUrl($path)) {
+            return $path;
+        }
+
         if (!$this->hideDefaultLocale($locale) and !in_array('dont_localize', $extra)) {
             $path = $locale . str_start($path, '/');
         }
