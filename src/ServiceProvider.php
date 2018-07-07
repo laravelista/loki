@@ -3,6 +3,7 @@
 namespace Laravelista\Loki;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use Illuminate\Routing\UrlGenerator;
 
 class ServiceProvider extends LaravelServiceProvider
 {
@@ -21,5 +22,9 @@ class ServiceProvider extends LaravelServiceProvider
             __DIR__ . '/../config/loki.php',
             'loki'
         );
+
+        $this->app->extend(UrlGenerator::class, function ($generator) {
+            return new Loki($this->app['router']->getRoutes(), $generator->getRequest());
+        });
     }
 }

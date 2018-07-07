@@ -24,6 +24,8 @@ Whatever `mcamara/laravel-localization` package can do, Loki can do too, but bet
 - [x] Translated routes
 - [x] Language selector
 - [x] Route caching
+- [x] Native Laravel helper functions (`route` and `url`)
+- [ ] Support for non localized routes (_in progress_)
 
 ## Installation
 
@@ -122,48 +124,32 @@ Route::get('o-nama', 'SampleController@about')->name('about');
 
 ## Helpers
 
-Use this helpers in your view files.
+**The default Laravel helper functions `route` and `url` have been changed to support URL localization. So you can use those as you normally would.** This enables you to easily swap the `mcamara/laravel-localization` package with this one.
 
-### `__url($path)`
+Use these helpers in your view files if you need to get current route in the specific locale or the current URL in the specific locale.
 
-Use this instead of `url($path)` in your application.
+### `__url($locale)`
+
+This helper localizes the current URL into the given locale.
 
 ```
-<a href="{{ __url('/about') }}">@lang('app.about')</a>
+<a href="{{ __url('hr') }}">O nama</a>
+<a href="{{ __url('en') }}">About us</a>
 ```
 
-### `__route($name)`
+### `__route($locale)`
 
-Use this instead of `route($name)` in your application.
+This helper localizes the current route into the given locale.
 
 **Use this if you have set `useTranslatedUrls` config option to `true`.**
+
+> I suggest giving all your routes a name and using this helper.
 
 Be sure to give all your routes a name.
 
 ```
-<a href="{{ __route('about') }}">@lang('app.about')</a>
-```
-
-### `__currentUrl($locale)`
-
-Use this to get the current URL in the desired locale.
-
-```
-<a href="{{ __currentUrl('hr') }}">O nama</a>
-<a href="{{ __currentUrl('en') }}">About us</a>
-```
-
-### `__currentRoute($locale)`
-
-Use this to get the current route in the desired locale.
-
-**Use this if you have set `useTranslatedUrls` config option to `true`.**
-
-Be sure to give all your routes a name.
-
-```
-<a href="{{ __currentRoute('hr') }}">O nama</a>
-<a href="{{ __currentRoute('en') }}">About us</a>
+<a href="{{ __route('hr') }}">O nama</a>
+<a href="{{ __route('en') }}">About us</a>
 ```
 
 ## Language switcher
@@ -174,7 +160,7 @@ Use this blade template snippet to enable users to change the language:
 <ul>
     @foreach(config('loki.supportedLocales') as $locale)
         <li>
-            <a rel="alternate" hreflang="{{ $locale }}" href="{{ __currentRoute($locale) }}">
+            <a rel="alternate" hreflang="{{ $locale }}" href="{{ __route($locale) }}">
                 {{ $locale }}
             </a>
         </li>

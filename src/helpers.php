@@ -1,51 +1,27 @@
 <?php
 
-use Laravelista\Loki\Loki;
+use Laravelista\Loki\Miek;
 
 if (!function_exists('__route')) {
     /**
-     * @param $name
+     * @param $locale
      *
      * @return string
      */
-    function __route($name)
+    function __route($locale)
     {
-        return app(Loki::class)->__route($name);
+        return app(Miek::class)->__route($locale);
     }
 }
 
 if (!function_exists('__url')) {
     /**
-     * @param $url
-     *
-     * @return string
-     */
-    function __url($url)
-    {
-        return app(Loki::class)->__url($url);
-    }
-}
-
-if (!function_exists('__currentUrl')) {
-    /**
      * @param $locale
      *
      * @return string
      */
-    function __currentUrl($locale)
+    function __url($locale)
     {
-        return app(Loki::class)->__currentUrl($locale);
-    }
-}
-
-if (!function_exists('__currentRoute')) {
-    /**
-     * @param $locale
-     *
-     * @return string
-     */
-    function __currentRoute($locale)
-    {
-        return app(Loki::class)->__currentRoute($locale);
+        return app(Miek::class)->__url($locale);
     }
 }
