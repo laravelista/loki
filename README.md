@@ -4,6 +4,8 @@ Laravel localization done right.
 
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://forthebadge.com)
 
+> **Not ready for production.** Still need to figure out some things.
+
 ## Overview
 
 If you are building a multilingual website and you need URL management then this is the package for you. It integrates into existing Laravel functionality to support translated URLs and custom locales.
