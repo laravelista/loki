@@ -36,5 +36,14 @@ return [
      *  `/en/about-us` on `en` locale will be
      *  `/hr/o-nama` on `hr` locale.
      */
-    'useTranslatedUrls' => false
+    'useTranslatedUrls' => false,
+
+    /**
+     * Which middleware group is used by default.
+     *
+     * You can use null to prevent it, a string for
+     * one middleware group, or an array of strings
+     * for multiple ones.
+     */
+    'middlewareGroup' => 'web',
 ];
