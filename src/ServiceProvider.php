@@ -9,6 +9,10 @@ class ServiceProvider extends LaravelServiceProvider
 {
     public function boot()
     {
+        if($middleware = $this->app['config']->get('middlewareAlias')) {
+            $this->app['router']->aliasMiddleware($middleware, Heimdall::class);
+        }
+        
         if($middlewareGroups = $this->app['config']->get('loki.middlewareGroup')) {
             foreach(array_wrap($middlewareGroups) as $group) {
                 $this->app['router']->pushMiddlewareToGroup($group, Heimdall::class);
