@@ -41,9 +41,17 @@ return [
     /**
      * Which middleware group is used by default.
      *
-     * You can use null to prevent it, a string for
-     * one middleware group, or an array of strings
-     * for multiple ones.
+     * You can use a falsy value to prevent it, a
+     * string for one middleware group, or an array
+     * of strings for multiple ones.
      */
     'middlewareGroup' => 'web',
+
+    /**
+     * Which alias is used for our middleware.
+     *
+     * You can use a falsy value to prevent it,
+     * or any string.
+     */
+    'middlewareAlias' => 'loki',
 ];
