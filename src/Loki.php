@@ -2,78 +2,39 @@
 
 namespace Laravelista\Loki;
 
-use \Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Facades\Route;
 
-/**
- * This class overrides the default laravel methods
- * for url generation: route and url.
- */
-class Loki extends UrlGenerator
+trait Loki
 {
-    /**
-     * Generate an absolute URL to the given localized path.
-     *
-     * @param  string  $path
-     * @param  mixed  $extra
-     * @param  bool|null  $secure
-     * @return string
-     */
-    public function to($path, $extra = [], $secure = null)
+    protected function mapLocalizedWebRoutes()
     {
-        $locale = app()->getLocale();
+        foreach (config('loki.supportedLocales') as $locale) {
+            if ($locale == config('loki.defaultLocale')) {
+                Route::middleware(['web', 'loki'])
+                    ->namespace($this->namespace)
+                    ->group($this->getBasePathForWebRoutes($locale));
+            }
 
-        // important because of redirect()->route()
-        if ($this->isValidUrl($path)) {
-            return $path;
+            Route::prefix($locale)
+                ->name("{$locale}.")
+                ->middleware(['web', 'loki'])
+                ->namespace($this->namespace)
+                ->group($this->getBasePathForWebRoutes($locale));
         }
-
-        if (!$this->hideDefaultLocale($locale) and !in_array('dont_localize', $extra)) {
-            $path = $locale . str_start($path, '/');
-        }
-
-        if (in_array('dont_localize', $extra)) {
-            unset($extra['dont_localize']);
-        }
-
-        return parent::to($path, $extra, $secure);
     }
 
     /**
-     * Get the URL to a named localized route.
+     * It gets the web routes file path.
      *
-     * @param  string  $name
-     * @param  mixed   $parameters
-     * @param  bool  $absolute
-     * @return string
-     *
-     * @throws \InvalidArgumentException
+     * If the useTranslatedUrls config option is set to true then
+     * it returns the path to the web routes file for the given locale.
      */
-    public function route($name, $parameters = [], $absolute = true)
+    protected function getBasePathForWebRoutes($locale)
     {
-        $locale = app()->getLocale();
-
-        if (!$this->hideDefaultLocale($locale) and !in_array('dont_localize', $parameters)) {
-            $name = $locale . '.' . $name;
+        if (config('loki.useTranslatedUrls') == true) {
+            return base_path("routes/{$locale}.web.php");
         }
 
-        if (in_array('dont_localize', $parameters)) {
-            unset($parameters['dont_localize']);
-        }
-
-        return parent::route($name, $parameters, $absolute);
-    }
-
-    /**
-     * It returns true if the current locale is the default locale and
-     * the option to hide the default locale is set to true.
-     */
-    protected function hideDefaultLocale($locale)
-    {
-        if (config('loki.hideDefaultLocale') == true and
-            $locale == config('loki.defaultLocale')) {
-            return true;
-        }
-
-        return false;
+        return base_path('routes/loki.web.php');
     }
 }

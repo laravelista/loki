@@ -4,8 +4,6 @@ Laravel localization done right.
 
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://forthebadge.com)
 
-> **Not ready for production.** Still need to figure out some things.
-
 ## Overview
 
 If you are building a multilingual website and you need URL management then this is the package for you. It integrates into existing Laravel functionality to support translated URLs and custom locales.
@@ -27,7 +25,7 @@ Whatever `mcamara/laravel-localization` package can do, Loki can do too, but bet
 - [x] Language selector
 - [x] Route caching
 - [x] Native Laravel helper functions (`route` and `url`)
-- [ ] Support for non localized routes (_in progress_)
+- [x] Support for non localized routes
 
 ## Installation
 
@@ -37,18 +35,28 @@ From the command line:
 composer require laravelista/loki
 ```
 
-Then, add the `Bifrost` trait to your `RouteServiceProvider` class:
+Then, add the `Loki` trait to your `RouteServiceProvider` class:
 
 ```
-use Laravelista\Loki\Bifrost;
+use Laravelista\Loki\Loki;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    use Bifrost;
+    use Loki;
 }
 ```
 
-Finally, delete the method `mapWebRoutes()` from `RouteServiceProvider`.
+Now, add `$this->mapLocalizedWebRoutes();` to the `map` method in the `RouteServiceProvider`.
+
+And finally, publish the localized routes file `loki.web.php` to your `/routes` directory:
+
+```
+php artisan vendor:publish --provider="Laravelista\Loki\ServiceProvider" --tag=route
+```
+
+---
+
+Put your localized routes in `/routes/loki.web.php` file. If you are using translated URLs create a route file for each locale `{locale}.web.php` (eg. `en.web.php`). Your non localized routes can remain in the `/routes/web.php` file. To access non localized routes use `URL::getNonLocalizedRoute` or `URL::getNonLocalizedUrl`. See the helpers chapter bellow to find out more.
 
 **That's it!** View the configuration chapter bellow to configure your preferences.
 
@@ -57,7 +65,7 @@ Finally, delete the method `mapWebRoutes()` from `RouteServiceProvider`.
 Publish the config file with:
 
 ```
-php artisan vendor:publish --provider="Laravelista\Loki\ServiceProvider"
+php artisan vendor:publish --provider="Laravelista\Loki\ServiceProvider" --tag=config
 ```
 
 You will find it under `config/loki.php`.
@@ -124,35 +132,59 @@ Route::get('kontakt', 'SampleController@contact')->name('contact');
 Route::get('o-nama', 'SampleController@about')->name('about');
 ```
 
+**If you have this enabled, be sure to use route names otherwise it will not work correctly.**
+
+##### Resource routes
+
+If you are using `Route::resource` and have set `useTranslatedUrls` to `true` you will have to set the names for the resource manually or stop using `resource` mapper and manually map resource routes.
+
+*Syntax for the `show` method, but you can apply the same to others.*
+
+`en.web.php`
+
+```
+Route::resource('news', 'NewsController')->only(['show']);
+```
+
+`hr.web.php`
+
+```
+Route::resource('novosti', 'NewsController')->only(['show'])->names([
+    'show' => 'news.show'
+]);
+```
+
 ## Helpers
 
-**The default Laravel helper functions `route` and `url` have been changed to support URL localization. So you can use those as you normally would.** This enables you to easily swap the `mcamara/laravel-localization` package with this one.
+**The default Laravel helper functions `route` and `url` have been changed to support URL localization. So you can use those as you normally would.** This enables you to easily swap the `mcamara/laravel-localization` package with this one. Also, you can install this package, configure your supported locales and your route and URL links will work without the need to change anything.
 
-Use these helpers in your view files if you need to get current route in the specific locale or the current URL in the specific locale.
+> The bellow helper methods are for edge cases where you want to retrieve the URL for specific locale or just get the current URL in specific locale.
 
-### `__url($locale)`
+### `URL::getNonLocalizedRoute($name, $parameters = [], $absolute = true)`
 
-This helper localizes the current URL into the given locale.
+It will return the URL for the given route name to the route located in `/routes/web.php` file.
 
-```
-<a href="{{ __url('hr') }}">O nama</a>
-<a href="{{ __url('en') }}">About us</a>
-```
+**Don't use the same route names for routes in `web.php` and `loki.web.php`.**
 
-### `__route($locale)`
+### `URL::getNonLocalizedUrl($path, $extra = [], $secure = null)`
 
-This helper localizes the current route into the given locale.
+It will return the URL for the given path as is.
 
-**Use this if you have set `useTranslatedUrls` config option to `true`.**
+### `URL::getLocalizedRoute($locale, $name = null, $parameters = [], $absolute = true)`
 
-> I suggest giving all your routes a name and using this helper.
+There are two ways of using this method:
 
-Be sure to give all your routes a name.
+1. Specify just the `$locale` - it will return the current route in the specified locale
+2. Specify the `$locale` and the route `$name` - it will return the URL to the given route name for given locale
 
-```
-<a href="{{ __route('hr') }}">O nama</a>
-<a href="{{ __route('en') }}">About us</a>
-```
+**If you are using translated routes be sure to use this method if needed.**
+
+### `URL::getLocalizedUrl($locale, $path = null, $extra = [], $secure = null)`
+
+There are two ways of using this method:
+
+1. Specify just the `$locale` - it will return the current URL in the specified locale
+2. Specify the `$locale` and the `$path` - it will return the URL to the given path for given locale
 
 ## Language switcher
 
@@ -162,7 +194,7 @@ Use this blade template snippet to enable users to change the language:
 <ul>
     @foreach(config('loki.supportedLocales') as $locale)
         <li>
-            <a rel="alternate" hreflang="{{ $locale }}" href="{{ __route($locale) }}">
+            <a rel="alternate" hreflang="{{ $locale }}" href="{{ URL::getLocalizedRoute($locale) }}">
                 {{ $locale }}
             </a>
         </li>

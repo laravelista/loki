@@ -22,10 +22,7 @@
     "autoload": {
         "psr-4": {
             "Laravelista\\Loki\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "extra": {
         "laravel": {
