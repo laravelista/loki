@@ -160,17 +160,17 @@ Route::resource('novosti', 'NewsController')->only(['show'])->names([
 
 > The bellow helper methods are for edge cases where you want to retrieve the URL for specific locale or just get the current URL in specific locale.
 
-### `URL::getNonLocalizedRoute($name, $parameters = [], $absolute = true)`
+#### `URL::getNonLocalizedRoute($name, $parameters = [], $absolute = true)`
 
 It will return the URL for the given route name to the route located in `/routes/web.php` file.
 
 **Don't use the same route names for routes in `web.php` and `loki.web.php`.**
 
-### `URL::getNonLocalizedUrl($path, $extra = [], $secure = null)`
+#### `URL::getNonLocalizedUrl($path, $extra = [], $secure = null)`
 
 It will return the URL for the given path as is.
 
-### `URL::getLocalizedRoute($locale, $name = null, $parameters = [], $absolute = true)`
+#### `URL::getLocalizedRoute($locale, $name = null, $parameters = [], $absolute = true)`
 
 There are two ways of using this method:
 
@@ -179,7 +179,7 @@ There are two ways of using this method:
 
 **If you are using translated routes be sure to use this method if needed.**
 
-### `URL::getLocalizedUrl($locale, $path = null, $extra = [], $secure = null)`
+#### `URL::getLocalizedUrl($locale, $path = null, $extra = [], $secure = null)`
 
 There are two ways of using this method:
 
