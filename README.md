@@ -46,13 +46,17 @@ class RouteServiceProvider extends ServiceProvider
 }
 ```
 
-Now, add `$this->mapLocalizedWebRoutes();` to the `map` method in the `RouteServiceProvider`.
+> If you don't intend to use translated URLs (by default it is set to false) then publish the route file with the command bellow. Otherwise be sure to publish the config file, set `useTranslatedUrls` to `true` and create appropriate route files `{locale}.web.php`.
 
-And finally, publish the localized routes file `loki.web.php` to your `/routes` directory:
+Publish the localized routes file `loki.web.php` to your `/routes` directory:
 
 ```
 php artisan vendor:publish --provider="Laravelista\Loki\ServiceProvider" --tag=route
 ```
+
+Now, add `$this->mapLocalizedWebRoutes();` to the `map` method in the `RouteServiceProvider`.
+
+**Installation complete!**
 
 ---
 
