@@ -78,11 +78,9 @@ class UrlGenerator extends LaravelUrlGenerator
             if (!is_null($prefix)) {
                 $name = str_replace_first($prefix . '.', '', $name);
             }
+        }
 
-            if (!$this->hideDefaultLocale($locale)) {
-                $name = $locale . '.' . $name;
-            }
-        } else {
+        if (!$this->hideDefaultLocale($locale)) {
             $name = $locale . '.' . $name;
         }
 
@@ -98,11 +96,9 @@ class UrlGenerator extends LaravelUrlGenerator
             if (!is_null($prefix)) {
                 $path = str_replace_first($prefix, '', $path);
             }
+        }
 
-            if (!$this->hideDefaultLocale($locale)) {
-                $path = $locale . str_start($path, '/');
-            }
-        } else {
+        if (!$this->hideDefaultLocale($locale)) {
             $path = $locale . str_start($path, '/');
         }
 
