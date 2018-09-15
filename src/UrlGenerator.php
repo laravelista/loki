@@ -71,6 +71,12 @@ class UrlGenerator extends LaravelUrlGenerator
     {
         if (is_null($name)) {
             $route = request()->route();
+            
+            // if the route is not found return dummy Url (404)
+            if (is_null($route)) {
+                return $this->getLocalizedUrl($locale, request()->path());
+            }
+            
             $name = $route->getName();
             $prefix = $route->getPrefix();
             $parameters = $route->parameters;
