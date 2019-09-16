@@ -2,6 +2,7 @@
 
 namespace Laravelista\Loki;
 
+use Illuminate\Support\Str;
 use \Illuminate\Routing\UrlGenerator as LaravelUrlGenerator;
 
 /**
@@ -30,7 +31,7 @@ class UrlGenerator extends LaravelUrlGenerator
         }
 
         if (!$this->hideDefaultLocale($locale)) {
-            $path = $locale . str_start($path, '/');
+            $path = $locale . Str::start($path, '/');
         }
 
         return parent::to($path, $extra, $secure);
@@ -71,18 +72,19 @@ class UrlGenerator extends LaravelUrlGenerator
     {
         if (is_null($name)) {
             $route = request()->route();
-            
+
             // if the route is not found return dummy Url (404)
             if (is_null($route)) {
                 return $this->getLocalizedUrl($locale, request()->path());
             }
-            
+
             $name = $route->getName();
             $prefix = $route->getPrefix();
-            $parameters = $route->parameters;
+            // This is a fix for Laravel 6.
+            $parameters = array_key_exists('data', $route->parameters) ? $route->parameters['data'] : $route->parameters;
 
             if (!is_null($prefix)) {
-                $name = str_replace_first($prefix . '.', '', $name);
+                $name = Str::replaceFirst($prefix . '.', '', $name);
             }
         }
 
@@ -100,12 +102,12 @@ class UrlGenerator extends LaravelUrlGenerator
             $prefix = request()->route()->getPrefix();
 
             if (!is_null($prefix)) {
-                $path = str_replace_first($prefix, '', $path);
+                $path = Str::replaceFirst($prefix, '', $path);
             }
         }
 
         if (!$this->hideDefaultLocale($locale)) {
-            $path = $locale . str_start($path, '/');
+            $path = $locale . Str::start($path, '/');
         }
 
         return parent::to($path, $extra, $secure);
