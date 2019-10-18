@@ -2,7 +2,7 @@
 
 Laravel localization done right.
 
-[![Become a Patron](https://img.shields.io/badge/Becoma%20a-Patron-f96854.svg?style=for-the-badge)](https://www.patreon.com/laravelista)
+[![Become a Patron](https://img.shields.io/badge/Become%20a-Patron-f96854.svg?style=for-the-badge)](https://www.patreon.com/laravelista)
 
 ## Overview
 
@@ -26,6 +26,7 @@ Whatever `mcamara/laravel-localization` package can do, Loki can do too, but bet
 - [x] Route caching
 - [x] Native Laravel helper functions (`route` and `url`)
 - [x] Support for non localized routes
+- [x] Slug translation
 
 ## Installation
 
@@ -226,16 +227,14 @@ _You can modify the template however you want._
 Add this code to your view file inside `@php {your code here} @endphp` block or inside a controller method where you want to translate slugs:
 
 ```
-@php
-    foreach (config('loki.supportedLocales') as  $locale) {
-        URL::overrideParameters($locale, $model->{'slug_'.$locale});
-    }
-@endphp
+foreach (config('loki.supportedLocales') as  $locale) {
+    URL::overrideParameters($locale, $model->{'slug_'.$locale});
+}
 ```
 
 Replace `$model->{'slug_'.$locale}` with whatever logic you use to get the translated slug for the model from database.
 
-This method will override the route parameters for given locale, so that the language switcher will return correct URLs with translated slugs.\
+This method will override the route parameters for given locale, so that the language switcher will return correct URLs with translated slugs.
 
 
 ## Laravelista Sponsors & Backers
