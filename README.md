@@ -164,15 +164,18 @@ Route::resource('novosti', 'NewsController')->only(['show'])->names([
 
 > The bellow helper methods are for edge cases where you want to retrieve the URL for specific locale or just get the current URL in specific locale.
 
+
 #### `URL::getNonLocalizedRoute($name, $parameters = [], $absolute = true)`
 
 It will return the URL for the given route name to the route located in `/routes/web.php` file.
 
 **Don't use the same route names for routes in `web.php` and `loki.web.php`.**
 
+
 #### `URL::getNonLocalizedUrl($path, $extra = [], $secure = null)`
 
 It will return the URL for the given path as is.
+
 
 #### `URL::getLocalizedRoute($locale, $name = null, $parameters = [], $absolute = true)`
 
@@ -183,12 +186,22 @@ There are two ways of using this method:
 
 **If you are using translated routes be sure to use this method if needed.**
 
+
 #### `URL::getLocalizedUrl($locale, $path = null, $extra = [], $secure = null)`
 
 There are two ways of using this method:
 
 1. Specify just the `$locale` - it will return the current URL in the specified locale
 2. Specify the `$locale` and the `$path` - it will return the URL to the given path for given locale
+
+
+#### `URL::overrideParameters($locale, array|string $parameters)`
+
+This method will set the parameters for given locale, so that when method `getLocalizedRoute`
+is called it will use these parameters instead of the already present parameters.
+
+Useful for translating slugs. Remember to include all parameters.
+
 
 ## Language switcher
 
@@ -207,6 +220,23 @@ Use this blade template snippet to enable users to change the language:
 ```
 
 _You can modify the template however you want._
+
+## Translating URL slugs/parameters
+
+Add this code to your view file inside `@php {your code here} @endphp` block or inside a controller method where you want to translate slugs:
+
+```
+@php
+    foreach (config('loki.supportedLocales') as  $locale) {
+        URL::overrideParameters($locale, $model->{'slug_'.$locale});
+    }
+@endphp
+```
+
+Replace `$model->{'slug_'.$locale}` with whatever logic you use to get the translated slug for the model from database.
+
+This method will override the route parameters for given locale, so that the language switcher will return correct URLs with translated slugs.\
+
 
 ## Laravelista Sponsors & Backers
 
