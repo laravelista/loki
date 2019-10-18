@@ -13,6 +13,24 @@ use \Illuminate\Routing\UrlGenerator as LaravelUrlGenerator;
  */
 class UrlGenerator extends LaravelUrlGenerator
 {
+    protected $parameter_overrides = [];
+
+    /**
+     * This method will set the parameters for given locale, so that
+     * when method `getLocalizedRoute` is called it will use
+     * these parameters instead of the already present parameters.
+     *
+     * Useful for translating slugs. Remember to include all parameters.
+     */
+    public function overrideParameters($locale, $parameters)
+    {
+        if (is_array($parameters)) {
+            $this->parameter_overrides[$locale] = $parameters;
+        } else {
+            $this->parameter_overrides[$locale] = [$parameters];
+        }
+    }
+
     /**
      * Generate an absolute URL to the given localized path.
      *
@@ -68,6 +86,15 @@ class UrlGenerator extends LaravelUrlGenerator
         return parent::to($path, $extra, $secure);
     }
 
+    protected function areParametersOverridden($locale)
+    {
+        if (array_key_exists($locale, $this->parameter_overrides)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getLocalizedRoute($locale, $name = null, $parameters = [], $absolute = true)
     {
         if (is_null($name)) {
@@ -81,6 +108,7 @@ class UrlGenerator extends LaravelUrlGenerator
             $name = $route->getName();
             $prefix = $route->getPrefix();
             // This is a fix for Laravel 6.
+            // TODO: Maybe this is not needed anymore...
             $parameters = array_key_exists('data', $route->parameters) ? $route->parameters['data'] : $route->parameters;
 
             if (!is_null($prefix)) {
@@ -90,6 +118,10 @@ class UrlGenerator extends LaravelUrlGenerator
 
         if (!$this->hideDefaultLocale($locale)) {
             $name = $locale . '.' . $name;
+        }
+
+        if ($this->areParametersOverridden($locale)) {
+            $parameters = $this->parameter_overrides[$locale];
         }
 
         return parent::route($name, $parameters, $absolute);
