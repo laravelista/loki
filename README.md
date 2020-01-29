@@ -250,4 +250,4 @@ In order to ensure that the open-source community is welcoming to all, please re
 
 ## License
 
-Comments is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Loki is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
