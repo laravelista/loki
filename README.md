@@ -236,19 +236,18 @@ Replace `$model->{'slug_'.$locale}` with whatever logic you use to get the trans
 
 This method will override the route parameters for given locale, so that the language switcher will return correct URLs with translated slugs.
 
+## Sponsors & Backers
 
-## Laravelista Sponsors & Backers
-
-I would like to extend my thanks to the following sponsors & backers for funding my open-source journey. If you are interested in becoming a sponsor or backer, please visit the Laravelista [Backers page](https://laravelista.hr/backers).
+I would like to extend my thanks to the following sponsors & backers for funding my open-source journey. If you are interested in becoming a sponsor or backer, please visit the [Backers page](https://mariobasic.com/backers).
 
 ## Contributing
 
-Thank you for considering contributing to Loki! The contribution guide can be found on the [Laravelista website](https://laravelista.hr/contributing).
+Thank you for considering contributing to Loki! The contribution guide can be found [Here](https://mariobasic.com/contributing).
 
 ## Code of Conduct
 
-In order to ensure that the Laravelista community is welcoming to all, please review and abide by the [Code of Conduct](https://laravelista.hr/code-of-conduct).
+In order to ensure that the open-source community is welcoming to all, please review and abide by the [Code of Conduct](https://mariobasic.com/code-of-conduct).
 
 ## License
 
-Loki is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Comments is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
