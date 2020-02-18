@@ -22,7 +22,7 @@ class Middleware
 
         // Hide default locale /en to /
         if (config('loki.hideDefaultLocale') == true and $prefix == config('loki.defaultLocale')) {
-            return redirect()->route(Str::replace_first($prefix . '.', '', $route->getName()), $route->parameters);
+            return redirect()->route(Str::replaceFirst($prefix . '.', '', $route->getName()), $route->parameters);
         }
 
         // Redirect / to default locale /en
