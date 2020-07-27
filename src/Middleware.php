@@ -18,7 +18,7 @@ class Middleware
     public function handle(Request $request, Closure $next)
     {
         $route = $request->route();
-        $prefix = $route->getPrefix();
+        $prefix = $request->segment(1);
 
         // Hide default locale /en to /
         if (config('loki.hideDefaultLocale') == true and $prefix == config('loki.defaultLocale')) {
