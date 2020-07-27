@@ -106,7 +106,7 @@ class UrlGenerator extends LaravelUrlGenerator
             }
 
             $name = $route->getName();
-            $prefix = $route->getPrefix();
+            $prefix = request()->segment(1);
             // This is a fix for Laravel 6.
             // TODO: Maybe this is not needed anymore...
             $parameters = array_key_exists('data', $route->parameters) ? $route->parameters['data'] : $route->parameters;
@@ -131,7 +131,7 @@ class UrlGenerator extends LaravelUrlGenerator
     {
         if (is_null($path)) {
             $path = request()->path();
-            $prefix = request()->route()->getPrefix();
+            $prefix = request()->segment(1);
 
             if (!is_null($prefix)) {
                 $path = Str::replaceFirst($prefix, '', $path);
